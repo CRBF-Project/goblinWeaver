@@ -14,4 +14,6 @@ public interface QueryDictionary {
     String getReleaseDirectCompileDependenciesEdgeAndArtifact(String artifactId);
     String getLastReleaseTimestamp();
     String getDependencyGraphFromReleaseIdListParameter();
+    String getReleaseAdoptionRate(String artifactGa, String releaseVersion);
+    String getReleaseAdoptionLifespan(String artifactGa, String releaseVersion);
 }

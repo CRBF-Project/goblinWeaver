@@ -11,11 +11,13 @@ public enum AddedValueEnum {
     FRESHNESS_AGGREGATED,
     POPULARITY_1_YEAR,
     POPULARITY_1_YEAR_AGGREGATED,
-    SPEED;
+    SPEED,
+    ADOPTION_RATE,
+    ADOPTION_LIFESPAN;
 
     public NodeType getTargetNodeType(){
         return switch (this) {
-            case CVE, CVE_AGGREGATED, FRESHNESS, FRESHNESS_AGGREGATED, POPULARITY_1_YEAR, POPULARITY_1_YEAR_AGGREGATED -> NodeType.RELEASE;
+            case CVE, CVE_AGGREGATED, FRESHNESS, FRESHNESS_AGGREGATED, POPULARITY_1_YEAR, POPULARITY_1_YEAR_AGGREGATED, ADOPTION_RATE, ADOPTION_LIFESPAN -> NodeType.RELEASE;
             case SPEED -> NodeType.ARTIFACT;
         };
     }
@@ -29,6 +31,9 @@ public enum AddedValueEnum {
             case POPULARITY_1_YEAR -> Popularity1Year.class;
             case POPULARITY_1_YEAR_AGGREGATED -> Popularity1YearAggregated.class;
             case SPEED -> Speed.class;
+            case ADOPTION_RATE -> AdoptionRate.class;
+            case ADOPTION_LIFESPAN -> AdoptionLifeSpan.class;
+
         };
     }
 

@@ -112,4 +112,23 @@ public class Neo4jQueryDictionary implements QueryDictionary {
                 "WHERE r.id IN $releaseIdList AND d.scope = 'compile' AND r2.version = d.targetVersion " +
                 "RETURN d,a,e,r2";
     }
+
+    @Override
+    public String getReleaseAdoptionRate(String artifactId, String releaseVersion) {
+        return "MATCH (r:Release)-[d:dependency]->(a:Artifact {id: '" + artifactId + "'}) " +
+                "WITH split(r.id, ':')[0] + ':' + split(r.id, ':')[1] AS project, d.targetVersion AS version " +
+                "WITH count(DISTINCT project) AS totalProjects, " +
+                "     count(DISTINCT CASE WHEN version = '" + releaseVersion
+                + "' THEN project ELSE null END) AS targetProjects " +
+                "RETURN CASE WHEN totalProjects > 0 THEN toFloat(targetProjects) / totalProjects ELSE 0.0 END";
+    }
+
+    @Override
+    public String getReleaseAdoptionLifespan(String artifactId, String releaseVersion) {
+        return "MATCH (r:Release)-[d:dependency]->(a:Artifact {id: '" + artifactId + "'}) " +
+                "WHERE d.targetVersion = '" + releaseVersion + "' " +
+                "WITH min(r.timestamp) AS firstAdoption, max(r.timestamp) AS lastAdoption " +
+                "RETURN CASE WHEN firstAdoption IS NOT NULL AND lastAdoption > firstAdoption " +
+                "            THEN toFloat(lastAdoption - firstAdoption) ELSE 0.0 END";
+    }
 }
